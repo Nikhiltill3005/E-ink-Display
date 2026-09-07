@@ -2,6 +2,7 @@
 // enable or disable GxEPD2_GFX base class
 #define ENABLE_GxEPD2_GFX 0
 #include <SPI.h>
+#include <images.h>
 #include <GxEPD2_BW.h>
 #include <GxEPD2_3C.h>
 #include <GxEPD2_4C.h>
@@ -28,6 +29,20 @@ GxEPD2_4C<GxEPD2_154c_GDEM0154F51H, GxEPD2_154c_GDEM0154F51H::HEIGHT> display(Gx
 const char HelloWorld[] = "";
 const char HelloWeACtStudio[] = ":P";
 
+void drawImage()
+{
+  display.setFullWindow();
+  display.firstPage();
+  do
+  {
+    display.fillScreen(GxEPD_WHITE);
+    display.setRotation(1);
+    display.drawXBitmap(0,0,nokia_bits,200,184,GxEPD_BLACK);
+  }
+  while (display.nextPage());
+};
+
+
 void helloWorld()
 {
   display.setRotation(1);
@@ -49,7 +64,7 @@ void helloWorld()
     display.getTextBounds(HelloWeACtStudio, 0, 0, &tbx, &tby, &tbw, &tbh);
     x = ((display.width() - tbw) / 2) - tbx;
     display.setCursor(x, y+tbh);
-    display.print(HelloWeACtStudio);
+    // display.print(HelloWeACtStudio);
   }
   while (display.nextPage());
 }
@@ -184,6 +199,7 @@ void setup()
   digitalWrite(8, HIGH);
    SPI.begin(EPD_SCK, -1, EPD_MOSI, CS_PIN);
   display.init(115200,true,50,false);
+  drawImage();
   // helloWorld();
   // helloFullScreenPartialMode();
   delay(1000);
